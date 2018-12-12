@@ -1,3 +1,4 @@
+//换乘提示信息容器
 #ifndef TR_MSG_H
 #define TR_MSG_H
 
