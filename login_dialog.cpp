@@ -1,3 +1,4 @@
+//登录窗口
 #include "login_dialog.h"
 #include "account.h"
 #include <QLineEdit>
