@@ -1,3 +1,4 @@
+//同名站点头信息容器
 #include "same_st_head.h"
 #include "ui_same_st_head.h"
 
