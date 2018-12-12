@@ -1,3 +1,4 @@
+//查找结果类  负责集成查找结果信息
 #ifndef FIND_H
 #define FIND_H
 #include <string>
