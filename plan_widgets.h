@@ -1,3 +1,4 @@
+//查询结果显示窗口
 #ifndef PLAN_WIDGETS_H
 #define PLAN_WIDGETS_H
 
