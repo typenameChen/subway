@@ -1,3 +1,4 @@
+//同名站点操作控件容器  当管理员查询到同名站点时，可通过此容器做进一步操作
 #ifndef SAME_ST_FAMILY_H
 #define SAME_ST_FAMILY_H
 
