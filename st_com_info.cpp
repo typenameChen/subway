@@ -1,3 +1,5 @@
+//站点信息窗口
+//负责显示及提供修改站点信息接口
 #include "st_com_info.h"
 #include "ui_st_com_info.h"
 #include "info_modify.h"
