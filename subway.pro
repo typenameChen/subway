@@ -82,3 +82,4 @@ FORMS    += widget.ui \
 
 RESOURCES += \
     icons.qrc
+ 
