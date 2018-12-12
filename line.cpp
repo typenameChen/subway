@@ -1,3 +1,5 @@
+//线路类
+//处理对站点的各项操作
 #include "line.h"
 #include "station.h"
 int LINE::GetPos(const STATION *p_st)const//辅助方法，获取p_st在调用对象中的位置，p_st不属于调用对象时返回-1，当调用对象为空且参数也为NULL时返回0
