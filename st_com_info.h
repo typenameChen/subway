@@ -1,3 +1,4 @@
+//站点信息窗口  负责显示及提供修改站点信息接口
 #ifndef ST_COM_INFO_H
 #define ST_COM_INFO_H
 
