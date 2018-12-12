@@ -1,3 +1,4 @@
+//主界面
 #include "widget.h"
 #include "ui_widget.h"
 #include "login_dialog.h"
