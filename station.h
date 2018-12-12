@@ -1,3 +1,4 @@
+//站点类  负责切断、连接与其他站点的关联，并返回与线路相关联的信息
 #ifndef STATION_H
 #define STATION_H
 #include <string>
