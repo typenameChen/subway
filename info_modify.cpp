@@ -1,3 +1,4 @@
+//站点信息修改窗口
 #include "info_modify.h"
 #include "ui_info_modify.h"
 #include <QMessageBox>
