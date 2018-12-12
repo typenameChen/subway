@@ -1,3 +1,5 @@
+//轨道交通类
+//负责总管数据的访问与修改
 #include "subway.h"
 #include "station.h"
 #include "line.h"
