@@ -1,3 +1,4 @@
+//站点换乘信息面板
 #ifndef ST_TR_INFO_H
 #define ST_TR_INFO_H
 
