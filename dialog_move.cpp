@@ -1,3 +1,5 @@
+//移动站点操作窗口
+//负责传递移动位置信息
 #include "dialog_move.h"
 #include "ui_dialog_move.h"
 
