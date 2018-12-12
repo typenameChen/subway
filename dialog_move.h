@@ -1,3 +1,4 @@
+//移动站点操作窗口  负责传递位置信息
 #ifndef DIALOG_MOVE_H
 #define DIALOG_MOVE_H
 
