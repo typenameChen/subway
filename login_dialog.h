@@ -1,3 +1,4 @@
+//登录窗口
 #ifndef LOGIN_DIALOG_H
 #define LOGIN_DIALOG_H
 
