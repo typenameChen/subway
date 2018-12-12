@@ -1,3 +1,4 @@
+//查询结果显示窗口
 #include "plan_widgets.h"
 #include "ui_plan_widgets.h"
 
