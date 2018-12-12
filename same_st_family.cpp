@@ -1,4 +1,5 @@
 //同名站点操作控件容器
+//当管理员查询到同名站点时，可凭借此容器做进一步操作
 #include "same_st_family.h"
 #include "ui_same_st_family.h"
 #include <QMessageBox>
