@@ -1,3 +1,5 @@
+//线路增加操作窗口
+//负责传递新增线路名
 #include "dialog_add_line.h"
 #include "ui_dialog_add_line.h"
 
