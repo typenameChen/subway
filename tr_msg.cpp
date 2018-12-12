@@ -1,3 +1,4 @@
+//换乘提示信息容器
 #include "tr_msg.h"
 #include "ui_tr_msg.h"
 
