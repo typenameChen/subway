@@ -1,3 +1,4 @@
+//单个站点管理容器
 #ifndef STT_ADM_H
 #define STT_ADM_H
 
