@@ -1,3 +1,4 @@
+//单个站点显示容器
 #ifndef STT_NOR_H
 #define STT_NOR_H
 
