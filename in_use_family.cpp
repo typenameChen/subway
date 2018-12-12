@@ -1,4 +1,4 @@
-//停用线路操作控件容器类
+//运行线路操作控件容器类
 #include "in_use_family.h"
 #include "ui_in_use_family.h"
 
