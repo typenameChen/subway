@@ -1,3 +1,5 @@
+//账号管理类定义
+//负责处理账号比对
 #include "account.h"
 
 ACCOUNT::ACCOUNT(const QString&acc,const QString&pass):account(acc),password(pass){}
