@@ -1,3 +1,4 @@
+//单个站点显示容器
 #include "stt_nor.h"
 #include "ui_stt_nor.h"
 #include "subway.h"
