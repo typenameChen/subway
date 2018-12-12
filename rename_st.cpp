@@ -1,3 +1,4 @@
+//站点重命名操作窗口
 #include "rename_st.h"
 #include "ui_rename_st.h"
 #include <QMessageBox>
