@@ -1,3 +1,4 @@
+//线路增加操作窗口  负责传递新增线路名
 #ifndef DIALOG_ADD_LINE_H
 #define DIALOG_ADD_LINE_H
 
