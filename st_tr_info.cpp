@@ -1,3 +1,4 @@
+//站点换乘信息面板
 #include "st_tr_info.h"
 #include "ui_st_tr_info.h"
 #include "tr_msg.h"
