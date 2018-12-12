@@ -1,3 +1,4 @@
+//线路头信息类  负责显示线路头信息
 #ifndef LINE_HEAD_H
 #define LINE_HEAD_H
 
