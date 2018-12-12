@@ -1,3 +1,4 @@
+//线路类  负责处理站点操作
 #ifndef LINE_H
 #define LINE_H
 #include <string>
