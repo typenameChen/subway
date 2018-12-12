@@ -1,3 +1,4 @@
+//单个站点管理容器
 #include "stt_adm.h"
 #include "ui_stt_adm.h"
 #include "subway.h"
