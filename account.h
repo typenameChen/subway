@@ -1,4 +1,4 @@
-//账号管理类  负责处理账号比对 
+//账号管理类  负责处理账号比对
 #ifndef ACCOUNT_H
 #define ACCOUNT_H
 #include <QString>
