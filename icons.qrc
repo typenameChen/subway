@@ -1,0 +1,35 @@
+<RCC>
+    <qresource prefix="/">
+        <file>icons/about.png</file>
+        <file>icons/application.png</file>
+        <file>icons/back.png</file>
+        <file>icons/danger.png</file>
+        <file>icons/delete.png</file>
+        <file>icons/equipment.png</file>
+        <file>icons/exit.png</file>
+        <file>icons/find.png</file>
+        <file>icons/home.png</file>
+        <file>icons/hourglass.png</file>
+        <file>icons/how-to.png</file>
+        <file>icons/info.png</file>
+        <file>icons/left-right.png</file>
+        <file>icons/list.png</file>
+        <file>icons/next.png</file>
+        <file>icons/no.png</file>
+        <file>icons/ok.png</file>
+        <file>icons/pinion.png</file>
+        <file>icons/question.png</file>
+        <file>icons/quit_left.png</file>
+        <file>icons/quit_right.png</file>
+        <file>icons/red-mark.png</file>
+        <file>icons/redo.png</file>
+        <file>icons/refresh.png</file>
+        <file>icons/repair.png</file>
+        <file>icons/save.png</file>
+        <file>icons/search.png</file>
+        <file>icons/sync.png</file>
+        <file>icons/up-down.png</file>
+        <file>icons/view.png</file>
+        <file>icons/yes.png</file>
+    </qresource>
+</RCC>
