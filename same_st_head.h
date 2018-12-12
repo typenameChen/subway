@@ -1,3 +1,4 @@
+//同名站点头信息容器
 #ifndef SAME_ST_HEAD_H
 #define SAME_ST_HEAD_H
 
