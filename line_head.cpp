@@ -1,3 +1,5 @@
+//线路头信息类
+//显示线路头信息
 #include "line_head.h"
 #include "ui_line_head.h"
 
