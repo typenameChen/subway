@@ -1,4 +1,4 @@
-#ifndef SW_DATABASE_H
+#ifndef SW_DATABASE_H 
 #define SW_DATABASE_H
 #include <QSqlDatabase>
 #include <QSqlQuery>
