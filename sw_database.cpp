@@ -1,4 +1,4 @@
-#include "sw_database.h"
+#include "sw_database.h" 
 #include <QSqlError>
 #include <QVariant>
 #include <algorithm>
