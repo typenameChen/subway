@@ -1,4 +1,3 @@
-//主界面
 #include "widget.h"
 #include "ui_widget.h"
 #include "login_dialog.h"
@@ -21,7 +20,7 @@
 #include "plan_widgets.h"
 #include <QCompleter>
 #include "rename_st.h"
-Widget::Widget(QWidget *parent) :
+Widget::Widget(QWidget *parent) try:
     QWidget(parent),line_obj_amount(6),checked_st(0),top(5),
     ui(new Ui::Widget)
 {
@@ -49,6 +48,11 @@ Widget::Widget(QWidget *parent) :
     ProtectControls();//保护不希望删除的控件
 
     WhetherAvailable();//刷新站点管理控件的激活状态
+}
+catch(string err_msg)
+{
+    QMessageBox::critical(NULL,tr("错误"),tr(err_msg.c_str()));
+    exit(EXIT_FAILURE);
 }
 
 bool Widget::eventFilter(QObject *obj, QEvent *ev)
@@ -120,7 +124,7 @@ void Widget::LabelCommonReaction(QLabel *label, QEvent *ev)
     }
 }
 
-void Widget::ProtectControls()//将不期望删除的空间添加进no_del
+void Widget::ProtectControls()//将不期望删除的控件添加进no_del
 {
     no_del=vector<QObject*>{
             ui->pushButton_del,ui->pushButton_move,ui->pushButton_newst,ui->pushButton_save,ui->pushButton_swap,

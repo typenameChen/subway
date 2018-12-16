@@ -1,5 +1,3 @@
-//轨道交通类 
-//负责总管数据的访问与修改
 #include "subway.h"
 #include "station.h"
 #include "line.h"
@@ -7,6 +5,7 @@
 #include <fstream>
 #include <sstream>
 #include <map>
+#include "sw_database.h"
 //#include <ulimit.h>
 using std::ofstream;
 using std::ifstream;
@@ -14,7 +13,7 @@ using std::getline;
 using std::istringstream;
 using std::map;
 using std::pair;
-
+#define USE_SQL
 //SUBWAY methods
 void SUBWAY::ThrowIfSameName(const LINE &line) const//辅助方法，当line与in_use_lines或un_use_lines里的元素有重名时抛出异常，异常指出是在哪个vector<LINE>对象中出现的重名
 {
@@ -213,6 +212,29 @@ void SUBWAY::WriteFile() const//将轨道信息写入文件
     ofs.close();
 }
 
+void SUBWAY::WriteSql() const//将线路写入数据库
+{
+    WriteSql(in_use_lines,"InuseLines");
+    WriteSql(un_use_lines,"UnuseLines");
+    sw_database->UseDatabase("InuseLines");
+    sw_database->Cover();//备份表格转正
+    sw_database->UseDatabase("UnuseLines");
+    sw_database->Cover();//备份表格转正
+}
+
+void SUBWAY::WriteSql(vector<LINE *> lines, const std::string &db_name)const//将线路写入特定数据库
+{
+    sw_database->UseDatabase(db_name);
+    for(unsigned int i=0;i<lines.size();i++)
+    {
+        string tab_name=lines[i]->Name()+string("_bk");//生成备份表格名
+        sw_database->CreateTable(tab_name);//创建备份表格
+        PATH path=lines[i]->GetPath();
+        for(unsigned int s=0;s<path.size();s++)
+            sw_database->PushItem(tab_name,path[s]);
+    }
+}
+
 void SUBWAY::WriteLines(ofstream &ofs, const vector<LINE *>&lines) const//将多条线路写入文件
 {
     for(const LINE*p_line:lines)
@@ -251,7 +273,6 @@ void SUBWAY::ReadInuseToUnuse(ifstream &ifs)//将文件中的inuse线路读取�
                 break;
         }
     }
-
 }
 
 bool SUBWAY::BeginWithIN_USE(ifstream &ifs)//判断文件读取指针下次是否读取到"#IN_USE"
@@ -320,6 +341,27 @@ bool SUBWAY::HaveUN_USE(ifstream &ifs)//判断能否从文件中读取到"#UN_US
     return false;
 }
 
+void SUBWAY::ReadSql()//从数据库里读出轨道信息
+{
+    ReadSqlToUnuse("InuseLines");//将数据库中的运行线路读取到未运行线路数组里
+    while(un_use_lines.size())//转移未运行线路里的数组
+        MoveLineToInUse(0);
+    ReadSqlToUnuse("UnuseLines");
+}
+
+void SUBWAY::ReadSqlToUnuse(const std::string &db_name)//将数据库里的线路读取到未运行线路组中
+{
+    sw_database->UseDatabase(db_name);//选择运行线路数据库
+    vector<string>tab_names=sw_database->GetTableNames();//获取所有表名（线路名）
+    for(unsigned int i=0;i<tab_names.size();i++)
+    {
+        CreatLineToUnUse(tab_names[i]);//创建空线路
+        int st_count=sw_database->GetItemCount(tab_names[i]);//获取表格的单元数量（站点数量）
+        for(int j=0;j<st_count;j++)
+            (*(un_use_lines.back()))<<sw_database->GetValue(tab_names[i],j);//创建新站点
+    }
+}
+
 void SUBWAY::SortLines(vector<LINE *> &lines)//对线路进行排序
 {
     map<string,LINE*>sort_lines;
@@ -337,9 +379,15 @@ void SUBWAY::SortOwnLines()//对所有拥有的线路按名称做字典进行排
     SortLines(un_use_lines);
 }
 
-SUBWAY::SUBWAY(const string&fn):filename(fn)
+SUBWAY::SUBWAY(const string&fn):filename(fn),sw_database(new SW_DATABASE)
 {
+#ifdef USE_SQL
+    ReadSql();
+    qDebug()<<"read sql";
+#else
     ReadFile();
+    qDebug()<<"read file";
+#endif
 }
 
 vector<PATH> SUBWAY::GetAllUseStatitonNames() const//获得所有运行线路的站点名，每个PATH对象的第一个元素为线路名，以此将站点分类为不同线路
@@ -670,11 +718,23 @@ MODE SUBWAY::GetModeNullThrow(const std::string &line_name)const
 
 SUBWAY::~SUBWAY()
 {
+#ifdef USE_SQL
+    WriteSql();
+    qDebug()<<"write sql";
+#elif defined FILE_TO_SQL
+    sw_database->SetFileToSql(true);
+    WriteSql();
+    qDebug()<<"write sql";
+#else
     WriteFile();
+    qDebug()<<"write file";
+#endif
     for(LINE*p_line:in_use_lines)
         delete p_line;
     for(LINE*p_line:un_use_lines)
         delete p_line;
+
+   delete sw_database;
 }
 
 

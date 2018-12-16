@@ -1,4 +1,3 @@
-//轨道交通类  负责总管数据的访问与修改 
 #ifndef SUBWAY_H
 #define SUBWAY_H
 #include <vector>
@@ -6,6 +5,7 @@
 #include "line.h"
 #include <set>
 #include "find.h"
+
 using std::vector;
 using std::string;
 using std::multiset;
@@ -13,6 +13,7 @@ class ofstream;
 using std::ofstream;
 class ifstream;
 using std::ifstream;
+class SW_DATABASE;
 enum MODE{UN_USE,IN_USE,ERR};//标记运行线路
 enum CP_TYPE{TRANSFER,PASS};//标记线路的比较类型
 typedef vector<string> PATH;//本文件代码中vector<string>类通常用来表示路径
@@ -52,6 +53,7 @@ private:
     vector<LINE*>in_use_lines;//存储所有正使用线路的指针
     vector<LINE*>un_use_lines;//存储所有未使用线路的指针
     const string filename;//存储轨道信息的文件名
+    SW_DATABASE*sw_database;//轨道数据库指针
     void ThrowIfSameName(const LINE&line)const;//辅助方法，当line与in_use_lines或un_use_lines里的元素有重名时抛出异常，异常指出是在哪个vector<LINE>对象中出现的重名 complete
     int GetPos(const string&line_name,MODE mode)const;//辅助方法，通过线路名获取相应mode的线路簇位置,位置获取失败时返回-1  complete
     void AssignLines(vector<LINE*>&lines,MODE mode)const;//辅助方法，依据mode将lines赋值为in_use_lines或un_use_lines complete
@@ -63,6 +65,7 @@ private:
     void MergePathVec(vector<PATH>&main_paths,const vector<PATH>&part_paths)const;//辅助方法，拼接两参数对象  complete
     void Earliest(PATH_MSG&pm)const;//最早化转乘站点  complete
     bool IsContainedSet(vector<string>sl_tr_points,const string&tr_line)const;//判断第一个参数或者它的反转对象是否为第二个参数的子集，由于该函数可能会反转sl_tr_points，因此按值传参  complete
+    //file interaction
     void WriteLines(ofstream&ofs, const vector<LINE *> &lines)const;//将多条线路写入文件 complete
     void ReadFile();//从文件里读出轨道信息  complete
     void ReadInuseToUnuse(ifstream&ifs);//将文件中的inuse线路读取到本对象的un_use_lines中去  complete
@@ -72,12 +75,20 @@ private:
     void ReadStationsToUnuse(ifstream&ifs);//读取站点到un_use_lines.back()中  complete
     void ReadUnuse(ifstream&ifs);//读取文件中的unuse线路  complete
     bool HaveUN_USE(ifstream&ifs);//判断能否从文件中读取到"#UN_USE"  complete
+    //sql interaction 运行与未运行线路分别由不同数据库维护，每张表维护一条线路
+    void ReadSql();//从数据库里读出轨道信息  complete
+    void ReadSqlToUnuse(const string&db_name);//将数据库里的线路读取到未运行线路组中  complete
+
     void SortLines(vector<LINE*>&lines);//对线路进行排序  complete
     void SortOwnLines();//对所有拥有的线路按名称做字典进行排序  complete
 
 public:
     SUBWAY(const std::string &fn="info/subway_info.txt");
+    //file interaction
     void WriteFile()const;//将轨道信息写入文件  complete
+    //sql interaction
+    void WriteSql()const;//将线路写入数据库  complete
+    void WriteSql(vector<LINE*>lines,const string&db_name)const;//将线路写入特定数据库  complete
     //查询操作
     vector<PATH> GetAllUseStatitonNames()const;//获得所有运行线路的站点名，每个PATH对象的第一个元素为线路名，以此将站点分类为不同线路  complete
     PATH GetStationNamesFromLine(const string&line_name,MODE mode)const;//获取指定使用或未使用线路的所有站点名 complete
