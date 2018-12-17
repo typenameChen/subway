@@ -1,4 +1,4 @@
-#include "subway.h" 
+#include "subway.h"
 #include "station.h"
 #include "line.h"
 #include <algorithm>
@@ -14,6 +14,7 @@ using std::istringstream;
 using std::map;
 using std::pair;
 #define USE_SQL
+//#define FILE_TO_SQL
 //SUBWAY methods
 void SUBWAY::ThrowIfSameName(const LINE &line) const//辅助方法，当line与in_use_lines或un_use_lines里的元素有重名时抛出异常，异常指出是在哪个vector<LINE>对象中出现的重名
 {
@@ -217,9 +218,9 @@ void SUBWAY::WriteSql() const//将线路写入数据库
     WriteSql(in_use_lines,"InuseLines");
     WriteSql(un_use_lines,"UnuseLines");
     sw_database->UseDatabase("InuseLines");
-    sw_database->Cover();//备份表格转正
+    sw_database->Cover();//更新表格转正
     sw_database->UseDatabase("UnuseLines");
-    sw_database->Cover();//备份表格转正
+    sw_database->Cover();//更新表格转正
 }
 
 void SUBWAY::WriteSql(vector<LINE *> lines, const std::string &db_name)const//将线路写入特定数据库
@@ -227,8 +228,8 @@ void SUBWAY::WriteSql(vector<LINE *> lines, const std::string &db_name)const//�
     sw_database->UseDatabase(db_name);
     for(unsigned int i=0;i<lines.size();i++)
     {
-        string tab_name=lines[i]->Name()+string("_bk");//生成备份表格名
-        sw_database->CreateTable(tab_name);//创建备份表格
+        string tab_name=lines[i]->Name()+string("_bk");//生成更新表格名
+        sw_database->CreateTable(tab_name);//创建更新表格
         PATH path=lines[i]->GetPath();
         for(unsigned int s=0;s<path.size();s++)
             sw_database->PushItem(tab_name,path[s]);
@@ -379,7 +380,7 @@ void SUBWAY::SortOwnLines()//对所有拥有的线路按名称做字典进行排
     SortLines(un_use_lines);
 }
 
-SUBWAY::SUBWAY(const string&fn):filename(fn),sw_database(new SW_DATABASE)
+SUBWAY::SUBWAY(const string&fn):filename(fn),sw_database(new SW_DATABASE("root","123456","InuseLines","UnuseLines"))
 {
 #ifdef USE_SQL
     ReadSql();
