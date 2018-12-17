@@ -1,4 +1,4 @@
-#include "sw_database.h" 
+#include "sw_database.h"
 #include <QSqlError>
 #include <QVariant>
 #include <algorithm>
@@ -54,7 +54,7 @@ std::string SW_DATABASE::GetValue(const std::string &tb_name, int pos)//获取�
     throw QString("SW_DATABASE::GetValue:试图在表%1的无效位置pos:%2获取站点").arg(tb_name.c_str()).arg(pos).toStdString();
 }
 
-void SW_DATABASE::Cover()//首先判断备份表或原表是否丢失，有丢失则抛出异常，否则备份表格覆盖原表格
+void SW_DATABASE::Cover()//首先判断更新表或原表是否丢失，有丢失则抛出异常，否则更新表格覆盖原表格
 {
     vector<TAB_PAIR> tab_pairs=GetTablePairs();
     //表格配对失败则抛出异常
@@ -63,7 +63,7 @@ void SW_DATABASE::Cover()//首先判断备份表或原表是否丢失，有丢�
         if(tp.status!=TAB_PAIR::ALL)
         {
             string prefix="SW_DATABASE::Cover：数据库中缺少";
-            string suffix="的备份表格";
+            string suffix="的更新表格";
             if(tp.status==TAB_PAIR::ONLY_ORI)
                 throw prefix+tp.ori+suffix;
             else if(tp.status==TAB_PAIR::ONLY_BK)
@@ -75,7 +75,7 @@ void SW_DATABASE::Cover()//首先判断备份表或原表是否丢失，有丢�
             }
         }
     }
-    //备份表覆盖原表
+    //更新表覆盖原表
     for(const TAB_PAIR&tp:tab_pairs)
     {
         query.exec(QString("DROP TABLE ")+tp.ori.c_str());
@@ -91,13 +91,13 @@ list<std::string> SW_DATABASE::VectorToList(const vector<std::string> vr)//将ve
     return lr;
 }
 
-bool SW_DATABASE::IsOri(const std::string &tab_name)//是否原表
+bool SW_DATABASE::IsOri(const std::string &tab_name)//是否为原表
 {
     string dist_part=tab_name.substr(tab_name.size()-3,tab_name.size());
     return dist_part!=string("_bk");
 }
 
-bool SW_DATABASE::IsBk(const std::string &tab_name)//是否备份表
+bool SW_DATABASE::IsBk(const std::string &tab_name)//是否为更新表
 {
     return !IsOri(tab_name);
 }
@@ -139,26 +139,33 @@ vector<TAB_PAIR> SW_DATABASE::GetTablePairs()//将表格配对，注意只配对
     return tab_pairs;
 }
 
-bool SW_DATABASE::IsFromFile() const
+bool SW_DATABASE::IsFromFile() const//判断是否由文件读取到数据库
 {
     return is_from_file;
 }
 
-void SW_DATABASE::SetFileToSql(bool from_file)
+void SW_DATABASE::SetFileToSql(bool from_file)//设置是否由文件读取到数据库
 {
     is_from_file=from_file;
 }
 
-SW_DATABASE::SW_DATABASE()
+SW_DATABASE::SW_DATABASE(const string&username,const string&password,const string&use_db1, const string&use_db2)//登陆与设置数据库，默认使用use_db1数据库
 {
     db=QSqlDatabase::addDatabase("QMYSQL");
-    db.setUserName("root");
-    db.setPassword("123456");
-    db.setDatabaseName("InuseLines");
+    db.setUserName(username.c_str());
+    db.setPassword(password.c_str());
+//    db.setDatabaseName(use_db1.c_str());
     query=QSqlQuery(db);
     if(!db.open())
         throw db.lastError().text().toStdString();
     is_from_file=false;
+
+    if(!query.exec(QString("USE %1").arg(use_db1.c_str())))
+        query.exec(QString("CREATE DATABASE ")+use_db1.c_str());
+    if(!query.exec(QString("USE %1").arg(use_db2.c_str())))
+        query.exec(QString("CREATE DATABASE ")+use_db2.c_str());
+
+    query.exec(QString("USE %1").arg(use_db1.c_str()));
 }
 
 SW_DATABASE::~SW_DATABASE()
