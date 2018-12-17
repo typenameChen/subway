@@ -87,7 +87,7 @@ public:
     //file interaction
     void WriteFile()const;//将轨道信息写入文件  complete
     //sql interaction
-    void WriteSql()const;//将线路写入数据库  complete
+    void WriteSql()const;//将线路写入数据库  complete 
     void WriteSql(vector<LINE*>lines,const string&db_name)const;//将线路写入特定数据库  complete
     //查询操作
     vector<PATH> GetAllUseStatitonNames()const;//获得所有运行线路的站点名，每个PATH对象的第一个元素为线路名，以此将站点分类为不同线路  complete
